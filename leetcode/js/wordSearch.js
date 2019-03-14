@@ -24,6 +24,7 @@ Given word = "ABCB", return false.
 var exist = function(board, word) {
     // base cases
     if(!board.length) return false;
+    if(!word.length) return false;
     if(board.length === 1) {  
         return board[0].join('').includes(word) || board[0].reverse().join('').includes(word)
     }
@@ -43,7 +44,7 @@ var exist = function(board, word) {
     return false;
 };
 
-const checkNeighboringLetters = (i, j, board, letterIdx, word, memo=[]) => {
+const checkNeighboringLetters = (i, j, board, letterIdx, word, memo=[], visited = {}) => {
     // if index == len of word, we found the last letter so return
     if(letterIdx === word.length) {
         return true
@@ -53,28 +54,32 @@ const checkNeighboringLetters = (i, j, board, letterIdx, word, memo=[]) => {
     if(!memo.length){
         memo = createMemo(i, j, board, memo)
     }
-        
     for(let k = 0; k < memo.length; k++){
         // if we found the next letter, recurse, and if recursion returns true, a path exists
         // else keep checking path starting from every possible neighbor in memo
+        // commented out visited memoize logic - have to revisit - passing 79/86 test cases 
         if(board[memo[k][0]][memo[k][1]] === word[letterIdx]){
-            const check = checkNeighboringLetters(memo[k][0], memo[k][1], board, letterIdx+1, word, []);
-            if(check) {
-                return check
+            // if(!visited[memo[k][0]],[memo[k][1]]){
+                const check = checkNeighboringLetters(memo[k][0], memo[k][1], board, letterIdx+1, word, []);
+                if(check) {
+                    return check
+                }
             }
-        } 
+        // } 
+        // visited[memo[k][0]],[memo[k][1]] = true
     }
     return false;
 }
 
 // a brute force way of determining the memo depending on board position
+// commented out all diagonal/non-adjacent cells for this problem specifically
 const createMemo = (i, j, board, memo = []) => {
     if(i === 0) {
         if(j === 0){
             // top left corner
             memo = [
                 [i+1, j],
-                [i+1, j+1],
+                // [i+1, j+1],
                 [i, j+1]
             ] 
         }
@@ -82,7 +87,7 @@ const createMemo = (i, j, board, memo = []) => {
             // top right corner
             memo = [
                 [i, j-1],
-                [i+1, j-1],
+                // [i+1, j-1],
                 [i+1, j]
             ]
         } 
@@ -91,9 +96,9 @@ const createMemo = (i, j, board, memo = []) => {
             memo = [
                 [i, j-1],
                 [i, j+1],
-                [i+1, j-1],
+                // [i+1, j-1],
                 [i+1, j],
-                [i+1, j+1],
+                // [i+1, j+1],
             ]
         } 
     }
@@ -102,14 +107,14 @@ const createMemo = (i, j, board, memo = []) => {
             // bottom left
             memo = [
                 [i-1, j],
-                [i-1, j+1],
+                // [i-1, j+1],
                 [i, j+1]
             ]
         }
         else if(j === board[0].length-1) {
             // bottom right
             memo = [
-                [i-1, j-1],
+                // [i-1, j-1],
                 [i-1, j],
                 [i, j-1]
             ]
@@ -117,9 +122,9 @@ const createMemo = (i, j, board, memo = []) => {
         else {
             // bottom side
             memo = [
-                [i-1, j-1],
+                // [i-1, j-1],
                 [i-1, j],
-                [i-1, j+1],
+                // [i-1, j+1],
                 [i, j-1],
                 [i, j+1]
             ]
@@ -129,32 +134,32 @@ const createMemo = (i, j, board, memo = []) => {
         // left side
         memo = [
             [i-1, j],
-            [i-1, j+1],
+            // [i-1, j+1],
             [i, j+1],
             [i+1, j],
-            [i+1, j+1]
+            // [i+1, j+1]
         ]
     }
     else if(j === board[0].length-1) {
         // right side
         memo = [
-            [i-1, j-1],
+            // [i-1, j-1],
             [i-1, j],
             [i, j-1],
-            [i+1, j-1],
+            // [i+1, j-1],
             [i+1, j]
         ]
     }
     else {
         memo = [
-            [i-1, j-1],
+            // [i-1, j-1],
             [i-1, j],
-            [i-1, j+1],
+            // [i-1, j+1],
             [i, j-1],
             [i, j+1],
-            [i+1, j-1],
+            // [i+1, j-1],
             [i+1, j],
-            [i+1, j+1]
+            // [i+1, j+1]
         ]
     }
     return memo;
