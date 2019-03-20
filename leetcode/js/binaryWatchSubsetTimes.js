@@ -16,56 +16,63 @@ Example:
 */
 
 
-// NOT A WORKING SOLUTION BECAUSE MEMORY GETS OVERLOADED
 var readBinaryWatch = function(num) {
     // 4 possible hour amounts
     // 5 possible minutes amounts
     // each increment by doubling the number prior
-
-    // base case: if n == 0, return
-    if(num === 0) return ["0:00"];
-    return getAllTimes(num).map(time => {
-        return `${time[0].toString()}:${time[1] < 10 ? '0' + time[1].toString() : time[1].toString()}`
-    })
+    const output = [];
     
-    function getAllTimes(num, values = [1,2,4,8,1,2,4,8,16,32], times = [], type = "hours") {
-        if(num === 0) return;
-        for(let i = 0; i < values.length; i++){
-            const recurseTime = getAllTimes(num-1, values.slice(1), times, type)
-            times = [...times, ...iterateTimes(values[i], type, recurseTime)]
-            if(i !== values.length-1 && values[i+1] < values[i]) type = "minutes"
-        }  
-        return times;
-    }
-    
-    function iterateTimes(current, type, times=[]){
-        if(!times.length){
-            let time = [0, 0];
-            if(type === "hours"){
-                time[0] += current
-            }
-            else if (type === "minutes"){
-                time[1] += current
-            }
-            times.push(time)
-        } else {
-            times = times.map(time => {
-                if(type === "hours" && (time[0]+current < 12)){
-                    time[0] += current
-                }
-                else if (type === "minutes" && (time[1]+current < 59)){
-                    time[1] += current
-                }
-                return time
-            })
+    // find the number of ones in bit expression of time and match with num
+    for (let h = 0; h < 12; h++) {
+        for (let m = 0; m < 60; m++) {
+            const ones = Number(h * 64 + m).toString(2).split('').filter(d => d === '1').length;
+            if (ones === num) output.push(m < 10 ? `${h}:0${m}` : `${h}:${m}`);
         }
-        return times;
     }
-    
-    
+    return output;
 };
 
-// over 9000 times on n = 2
-// don't run on n = 3
+// NON-WORKING RECURSIVE SOLUTION BECAUSE MEMORY GETS OVERLOADED
+
+    // // base case: if n == 0, return
+    // if(num === 0) return ["0:00"];
+    // return getAllTimes(num).map(time => {
+    //     return `${time[0].toString()}:${time[1] < 10 ? '0' + time[1].toString() : time[1].toString()}`
+    // })
+    
+    // function getAllTimes(num, values = [1,2,4,8,1,2,4,8,16,32], times = [], type = "hours") {
+    //     if(num === 0) return;
+    //     for(let i = 0; i < values.length; i++){
+    //         const recurseTime = getAllTimes(num-1, values.slice(1), times, type)
+    //         times = [...times, ...iterateTimes(values[i], type, recurseTime)]
+    //         if(i !== values.length-1 && values[i+1] < values[i]) type = "minutes"
+    //     }  
+    //     return times;
+    // }
+    
+    // function iterateTimes(current, type, times=[]){
+    //     if(!times.length){
+    //         let time = [0, 0];
+    //         if(type === "hours"){
+    //             time[0] += current
+    //         }
+    //         else if (type === "minutes"){
+    //             time[1] += current
+    //         }
+    //         times.push(time)
+    //     } else {
+    //         times = times.map(time => {
+    //             if(type === "hours" && (time[0]+current < 12)){
+    //                 time[0] += current
+    //             }
+    //             else if (type === "minutes" && (time[1]+current < 59)){
+    //                 time[1] += current
+    //             }
+    //             return time
+    //         })
+    //     }
+    //     return times;
+    // }
+
 const result = readBinaryWatch(2);
 console.log(result);
