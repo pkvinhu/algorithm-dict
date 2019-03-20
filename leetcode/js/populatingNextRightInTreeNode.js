@@ -25,11 +25,19 @@ function Node(val,left,right) {
 };
 
 var connect = function(root) {
+    // base case: if root is empty
     if(!root) return null;
     let queue = [root];
     
+    // queue keeps track of if we've iterated through all bst nodes
+    // while we haven't, operate on them
     while(queue.length){
+        // new queue will store next level of nodes in order, left to right
         const newQueue = [];
+
+        // on each node, we ask if it isn't at the rightmost edge
+        // next node.next is at the next index of queue
+        // then push next-level nodes from left to right nodes
         for(let i = 0; i < queue.length; i++){
             if(i !== queue.length-1){
                 queue[i].next = queue[i+1]
@@ -41,6 +49,7 @@ var connect = function(root) {
                 newQueue.push(queue[i].right)
             }
         }
+        // reassign next level's nodes to be worked on in next iteration
         queue = newQueue;
     }
     return root;
