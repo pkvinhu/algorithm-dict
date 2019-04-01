@@ -56,6 +56,7 @@ var isValidSudoku = function(board) {
     return true;
 };
 
+// function to check that both rows and cols are still valid
 let loop = (i, j, board, container) => {
    let num = board[i][j]
    if(num !== '.'){
@@ -67,6 +68,7 @@ let loop = (i, j, board, container) => {
    return container
 }
 
+// function to check that grid is still valid
 let loopGrid = (i, j, board, gridContainer) => {
     let row = i;
     let col = j;

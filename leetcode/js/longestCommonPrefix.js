@@ -28,7 +28,7 @@ var longestCommonPrefix = function(strs) {
             }
         }, true) 
         if(test){
-        prefix+=strs[0][i]
+            prefix+=strs[0][i]
         }
         if(!test){
             break;
