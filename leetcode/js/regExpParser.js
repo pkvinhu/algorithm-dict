@@ -37,6 +37,7 @@ Example 5:
     Output: false
 */
 
+// RECURSIVE SOLUTION 1
 var isMatch = function(s, p) {
 
     // initialize recursive helper function
@@ -97,6 +98,25 @@ var isMatch = function(s, p) {
     // return result of recursive call   
     return matchRegExp(s, p, 0, 0);
 }
+
+// RECURSIVE SOLUTION 2 
+// Less verbose but greater space complexity because instead of using pointers
+// we are creating sliced copies of s and p
+/*
+
+var isMatch = function(s, p) {
+    if(!p.length) return !s.length;
+    
+    let match = s.length && (p[0] == s[0] || p[0] == '.')
+    
+    if(p.length >= 2 && p[1] == '*'){
+        return isMatch(s, p.slice(2)) || (match && isMatch(s.slice(1), p))
+    }
+    
+    else return match && isMatch(s.slice(1), p.slice(1))
+}
+
+*/
 
 const result1 = isMatch('mississippi', "mis*is*p*."); // false
 const result2 = isMatch('aab', "c*a*b") // true
