@@ -53,8 +53,8 @@ var splitIntoFibonacci = function(S) {
             let jSlice = S.slice(i+1, j+1)
             if(jSlice != 0 && jSlice.startsWith('0')) break;
             // if each slice of first two numbers meet conditions, recurse
-            // recursive function will return sequence if the fub sequence continues to the end
-            let set = [Number(S.slice(0, i+1)), Number(S.slice(i+1, j+1))]
+            // recursive function will return sequence if the fib sequence continues to the end
+            let set = [Number(iSlice), Number(jSlice)]            
             let fibSequence = recurse(set, S.slice(j+1))
             if(fibSequence) return fibSequence
         }
