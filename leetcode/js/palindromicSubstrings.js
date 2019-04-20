@@ -1,4 +1,4 @@
-// LONGEST PALINDROMIC SUBSTRING
+// PALINDROMIC SUBSTRINGs
 
 /*
 Given a string, your task is to count 
