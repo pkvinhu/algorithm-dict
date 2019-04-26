@@ -58,6 +58,26 @@ var combinationSum = function(candidates, target) {
     return sets;
 };
 
-const result = combinationSum([2,3,5], 8);
+// BACKTRACKING SOLUTION
+var combinationSumBackTracking = function(candidates, target) {
+    let sets = [];
+    
+    const recurseCandidates = (candidates, set=[], target)=> {
+        if(target < 0){
+            return;
+        }
+        if(target===0){
+            sets.push(set)
+        }
+        for(let i = 0; i < candidates.length; i++){
+            if(candidates[i] > target) continue;
+            recurseCandidates(candidates.slice(i), [...set, candidates[i]], target-candidates[i])
+        }
+    }
+    recurseCandidates(candidates, [], target);
+    return sets;
+};
+
+const result = combinationSumBackTracking([2,3,5], 8);
 
 console.log(result);
