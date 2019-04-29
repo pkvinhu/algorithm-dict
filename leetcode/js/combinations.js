@@ -42,6 +42,29 @@ var combine = function(n, k) {
     return sets;
 };
 
+// BACKTRACKING SOLUTION
+var backtrackCombine = function(n, k) {
+    let sets = [];
+    
+    const getCombos = (currN, k, set = []) => {
+        if(k === 0) {
+            sets.push([...set])
+            return
+        }
+        else if(currN <= n) {
+            for(let i = currN; i <= n; i++){
+                // push to set
+                set.push(i)
+                getCombos(i+1, k-1, set)
+                // permutation has already been checked, pop off set
+                set.pop();
+            }
+        }
+    }
+    getCombos(1, k);
+    return sets;
+};
+
 const result = combine(4, 2);
 
 console.log(result);
